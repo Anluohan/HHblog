@@ -17,3 +17,4 @@ repo sync -c --force-sync可以强制更新，但会将本地修改的代码删�
 
 **常用形式**：`repo sync -c -j10`
 
+repo forall -c 'git lfs pull'
