@@ -1,6 +1,22 @@
 # Git
 
-## repo sync
+## 常用命令
+
+### 查看提交文件
+
+```
+git log --name-only
+```
+
+### 分支
+
+#### 删除分支
+
+```bash
+git branch -d zh #删除本地名为zh的分支
+```
+
+### repo sync
 
 从远程仓库更新本地代码，如果远程仓库删除部分代码，使用该命令也会将本地的那部分代码删除.
 
@@ -18,3 +34,4 @@ repo sync -c --force-sync可以强制更新，但会将本地修改的代码删�
 **常用形式**：`repo sync -c -j10`
 
 repo forall -c 'git lfs pull'
+

@@ -1,4 +1,4 @@
-# C++作死之旅
+# Cpp - a stupid language
 
 ## vector
 
@@ -137,11 +137,30 @@ std::shared_ptr<int> p2(nullptr);    //传入空指针 nullptr
 2. 创建非空指针
 
 ```cpp
-std::shared_ptr<int> p3(new int(10));
-std::shared_ptr<int> p3 = std::make_shared<int>(10);
+std::shared_ptr<int> p3(new int(10));  //做了两次分配，一次分配int(10),一次分配控制块 
+std::shared_ptr<int> p3 = std::make_shared<int>(10);//推荐使用，只分配一块内存给int(10)和控制块
 ```
 
-这两种方式是完全一样的，都指向存有10的int类型的堆内存空间。
+推荐使用`std::make_shared<int>(10)`这种形式创建shared_ptr指针，这种方式更安全。例如下面这种情况
+
+```cpp
+void f(std::shared_ptr<A> s_ptr, int size);
+
+/**
+* 执行f()函数前的三个过程
+* 1. 创建A对象
+* 2. 创建shared_ptr管理A
+* 3. 执行get_size()
+*
+* 编译时，过程1能保证在过程2之前发生，但过程3发生的时期不确定
+* 如果执行顺序是1->3->2，并且执行3的过程中发生异常，那么程序结束
+* 这就导致分配的A对象不会被释放
+*/
+//调用f()
+f(std::shared_ptr<A>(new(A)), get_size());
+```
+
+
 
 3. 拷贝构造
 
