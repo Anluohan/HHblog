@@ -67,7 +67,7 @@ Signal 11
 
 发现日志报段错误后找到设备中的崩溃日志。
 
-![image-20220816165254051](C:\Users\zhuhan\AppData\Roaming\Typora\typora-user-images\image-20220816165254051.png)
+![崩溃日志](images/signal11_image/崩溃日志.png)
 
 崩溃日志中有几个关键信息。
 
@@ -80,7 +80,7 @@ Signal 11
 
 ## 4. 定位问题
 
-![image-20220816192248507](C:\Users\zhuhan\AppData\Roaming\Typora\typora-user-images\image-20220816192248507.png)
+![定位问题-1](images/signal11_image/定位问题-1.png)
 
 1. 找到崩溃日志中崩溃的.so和cpp文件，一般直接定位.so文件即可。
 
@@ -98,7 +98,7 @@ Signal 11
 addr2line -a -C -f -i -e ./out/rk3568/lib.unstripped/ability/ability_runtime/libappkit_native.z.so 45f60 7bfac
 ```
 
-![image-20220816192630464](C:\Users\zhuhan\AppData\Roaming\Typora\typora-user-images\image-20220816192630464.png)
+![定位问题-2](images/signal11_image/定位问题-2.png)
 
 ## 5. 检查代码
 
@@ -110,7 +110,7 @@ HILOG_DEBUG("Number of ability to be notified : [%{public}d]", static_cast<int>(
 ...
 
 //修改后
-if（abilityRecordMgr_） {
+if(abilityRecordMgr_) {
     HILOG_DEBUG("Number of ability to be notified : [%{public}d]", static_cast<int>(abilityRecordMgr_->GetRecordCount()));
     ...
 }
