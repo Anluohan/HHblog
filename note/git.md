@@ -10,11 +10,27 @@ git log --name-only
 
 ### 分支
 
-#### 删除分支
+#### 本地分支
 
 ```bash
 git branch -d zh #删除本地名为zh的分支
 ```
+
+#### 远程分支
+
+```bash
+#创建分支，推送到远程分支
+git branch test 
+git push origin test
+
+#删除远端分支
+git push origin --delete test
+
+git branch -r -d origin/zh #删除
+git push origin :zh #sheng'xi
+```
+
+
 
 ### repo sync
 
@@ -34,4 +50,14 @@ repo sync -c --force-sync可以强制更新，但会将本地修改的代码删�
 **常用形式**：`repo sync -c -j10`
 
 repo forall -c 'git lfs pull'
+
+### untracked files
+
+```bash
+git clean -f #删除为跟踪文件
+
+git clean -fd #删除为跟踪文件和目录
+
+git clean -nfd #查看要删除的文件和目录，不会删除任何文件，仅查看
+```
 
