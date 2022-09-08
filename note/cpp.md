@@ -1,38 +1,16 @@
 # Cpp - a stupid language
 
-## vector
+## 编译与运行
 
-```cpp
-#include<string>
-#include<vector>
-#include<iostream>
-#include<cstdlib>  //C语言标准库
-using namespace std;
+```shell
+#将a.cpp编译到当前目录的out目录下，命名为a
+g++ a.cpp -o ./out/a
 
-int main() {
-	int x = 1024;
-	//指针代表特定内存地址，&x表示x对象的地址
-	int* p = &x;
-
-	cout << p << endl;  //地址
-	cout << *p << endl; //所指的对象x
-
-
-	vector<int> a, b, c, d;
-	vector<int>* pv = 0;  //初始化指向0地址，即为空指针
-	vector<int>* addrs[4] = {&a,&b,&c,&d};//vector<int>*类型的数组，其元素为指向vector的地址
-	vector<int>* cur = 0;
-	for (int i = 0; i < 4; i++) {
-		cur = addrs[i];
-		if (cur && !cur->empty() && ((*cur)[1] == 1)) {
-			//*cur表示vector a，
-		}
-	}
-	int index = rand() % 4;
-	
-	return 0;
-}
+#执行当前目录下的out目录下的a文件
+./out/a 
 ```
+
+
 
 ## 指针
 
@@ -873,6 +851,38 @@ int pos = str1.find("de");  //返回找到的第一个字符串位置下标，�
 ```
 
 ### vector
+
+```cpp
+#include<string>
+#include<vector>
+#include<iostream>
+#include<cstdlib>  //C语言标准库
+using namespace std;
+
+int main() {
+	int x = 1024;
+	//指针代表特定内存地址，&x表示x对象的地址
+	int* p = &x;
+
+	cout << p << endl;  //地址
+	cout << *p << endl; //所指的对象x
+
+
+	vector<int> a, b, c, d;
+	vector<int>* pv = 0;  //初始化指向0地址，即为空指针
+	vector<int>* addrs[4] = {&a,&b,&c,&d};//vector<int>*类型的数组，其元素为指向vector的地址
+	vector<int>* cur = 0;
+	for (int i = 0; i < 4; i++) {
+		cur = addrs[i];
+		if (cur && !cur->empty() && ((*cur)[1] == 1)) {
+			//*cur表示vector a，
+		}
+	}
+	int index = rand() % 4;
+	
+	return 0;
+}
+```
 
 #### 构造
 
