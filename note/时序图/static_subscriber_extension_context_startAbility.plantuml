@@ -1,0 +1,40 @@
+@startuml
+autonumber
+skinparam responseMessageBelowArrow true
+
+JSApp -> JsStaticSubscriberExtensionContext++ : 发送 StartAbility 的请求
+
+JsStaticSubscriberExtensionContext -> JsStaticSubscriberExtensionContext : js_runtime_utiles.h:CheckParamsAndGetThis()
+
+JsStaticSubscriberExtensionContext -> JsStaticSubscriberExtensionContext : 校验参数数量
+
+JsStaticSubscriberExtensionContext -> JsStaticSubscriberExtensionContext : 解析want和startOptions
+
+JsStaticSubscriberExtensionContext -> StaticSubscriberExtensionContext++ : StartAbility(want)/StartAbility(want, startOptions)
+
+StaticSubscriberExtensionContext -> AbilityManagerClient++ : StartAbility(want, token_, ILLEGAL_REQUEST_CODE)
+
+AbilityManagerClient -> AbilityManagerProxy++ : StartAbility(want, callerToken, userId, ILLEGAL_REQUEST_CODE)
+
+AbilityManagerProxy -> AbilityManagerProxy : write 'want, callerToken, userId, requestCode' to data
+
+AbilityManagerProxy --[#Green]> AbilityManagerStub++ : StartAbilityAddCallerInner(data, reply)
+
+AbilityManagerStub -> AbilityManagerStub : 从data中取出want, callerToken, userId, requestCode
+
+AbilityManagerStub -> AbilityManagerService++ : StartAbility(want, callerToken, userId, requestCode)
+
+AbilityManagerService -> AbilityManagerService : StartAbilityInner(want, callerToken, requestCode, -1, userId)
+
+AbilityManagerService --> AbilityManagerStub-- : res
+
+AbilityManagerStub --[#Green]> AbilityManagerProxy-- : res
+
+AbilityManagerProxy --> AbilityManagerClient-- : res
+
+AbilityManagerClient --> StaticSubscriberExtensionContext-- : res
+
+StaticSubscriberExtensionContext --> JsStaticSubscriberExtensionContext-- : res
+
+
+@enduml

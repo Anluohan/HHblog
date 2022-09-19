@@ -1,0 +1,21 @@
+@startuml
+
+class IFormMgr
+
+class IRemoteBroker
+
+class FormMgrProxy
+
+class FormMgrStub
+
+class FormMgrService
+
+IRemoteBroker <|-- IFormMgr
+
+IFormMgr <|-- FormMgrProxy
+
+IFormMgr <|-- FormMgrStub
+
+FormMgrStub <|-- FormMgrService
+
+@enduml

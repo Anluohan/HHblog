@@ -1,0 +1,67 @@
+@startuml
+autonumber
+skinparam responseMessageBelowArrow true
+
+JSApp -> JsFormExtensionContext++ : 发送 StartAbility 的请求
+
+JsFormExtensionContext -> JsFormExtensionContext : js_runtime_utiles.h:CheckParamsAndGetThis()
+
+JsFormExtensionContext -> JsFormExtensionContext : checkpramas并解析want
+
+JsFormExtensionContext -> FormExtensionContext++ : FormExtensionContext:context_->StartAbility(want)
+
+FormExtensionContext -> FormMgr++ : FormMgr::StartAbility(want, token_)
+
+FormMgr -> FormMgr : connect():connect FormMgrService
+
+FormMgr -> FormMgrProxy++ : FormMgrProxy::StartAbility(want, callerToken)
+
+FormMgrProxy -> FormMgrProxy : a.write interface\n b.write want\n c. write token
+
+FormMgrProxy --[#Green]> FormMgrStub++ : IPC, FormMgrStub::HandleStartAbility
+
+FormMgrStub -> FormMgrStub : 取出Proxy发送过来的want&token
+
+FormMgrStub -> FormMgrService++ : FormMgrService::StartAbility(want, callertoken)
+
+FormMgrService -> IBundleMgr++ : 请求获取IBundleMgr
+
+IBundleMgr --> FormMgrService-- : 返回IBundleMgr
+
+FormMgrService -> FormMgrService : check isSystem app
+
+alt is not System app
+    FormMgrService --> FormMgrStub : ERR_APPEXECFWK_FORM_PERMISSION_DENY
+    FormMgrStub --[#Green]> FormMgrProxy : ERR_APPEXECFWK_FORM_PERMISSION_DENY
+    FormMgrProxy --> FormMgr : ERR_APPEXECFWK_FORM_PERMISSION_DENY
+    FormMgr --> FormExtensionContext : ERR_APPEXECFWK_FORM_PERMISSION_DENY
+    FormExtensionContext --> JsFormExtensionContext : ERR_APPEXECFWK_FORM_PERMISSION_DENY
+end
+
+FormMgrService -> FormMgrService : 检查调用者和被调用者bundleName是否一致
+alt bundleName不一致
+    FormMgrService --> FormMgrStub : ERR_APPEXECFWK_FORM_INVALID_BUNDLENAME
+    FormMgrStub --[#Green]> FormMgrProxy : ERR_APPEXECFWK_FORM_INVALID_BUNDLENAME
+    FormMgrProxy --> FormMgr : ERR_APPEXECFWK_FORM_INVALID_BUNDLENAME
+    FormMgr --> FormExtensionContext : ERR_APPEXECFWK_FORM_INVALID_BUNDLENAME
+    FormExtensionContext --> JsFormExtensionContext : ERR_APPEXECFWK_FORM_INVALID_BUNDLENAME
+end
+
+FormMgrService -> FormMgrService : 检查want abilityName是否为空
+alt 为空
+    FormMgrService --> FormMgrStub : ERR_APPEXECFWK_FORM_NO_SUCH_ABILITY
+    FormMgrStub --[#Green]> FormMgrProxy : ERR_APPEXECFWK_FORM_NO_SUCH_ABILITY
+    FormMgrProxy --> FormMgr : ERR_APPEXECFWK_FORM_NO_SUCH_ABILITY
+    FormMgr --> FormExtensionContext : ERR_APPEXECFWK_FORM_NO_SUCH_ABILITY
+    FormExtensionContext --> JsFormExtensionContext : ERR_APPEXECFWK_FORM_NO_SUCH_ABILITY
+end
+
+FormMgrService -> IAbilityManager++ : StartAbility(want, callerToken, -1, -1)
+IAbilityManager --> FormMgrService-- : return res
+FormMgrService --> FormMgrStub-- : return res
+FormMgrStub --[#Green]> FormMgrProxy-- : return res
+FormMgrProxy --> FormMgr-- : return res
+FormMgr --> FormExtensionContext-- : return res
+FormExtensionContext --> JsFormExtensionContext-- : return res
+
+@enduml

@@ -1,0 +1,56 @@
+@startuml Clazz
+
+namespace OHOS {
+    namespace AbilityRuntime {
+        class ContextImpl {}
+        class ExtensionContext {}
+        class FormExtensionContext {
+            - abilityInfo_ : std::shared_ptr<OHOS::AppExecFwk::AbilityInfo>
+        }
+        class FormExtension {}
+        class JSFormExtension {}
+
+        class JsFormExtensionContext {
+            -  context_ : weak_ptr<FormExtensionContext>
+        }
+        JsFormExtensionContext::context_ --> FormExtensionContext
+
+        ContextImpl <|-- ExtensionContext
+        ExtensionContext <|-- FormExtensionContext
+        FormExtensionContext <|-- FormExtension
+        FormExtension <|-- JSFormExtension
+    }
+
+    namespace AppExecFwk {
+        class FormHostStub {}
+        class FormHostClient {}
+
+        FormHostStub <|-- FormHostClient
+
+        entity FormJSInfo {
+            int64_t formId
+            std::string formName
+            std::string bundleName
+            std::string abilityName
+            ...
+        }
+
+        class FormHostRecord {
+
+        }
+
+        class FormRecord {
+
+        }
+
+        class IRemoteProxy extends PeerHolder {
+
+        }
+        class FormMgrProxy extends IRemoteProxy {
+
+        }
+
+    }
+}
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+
+autonumber
+
+JsFormExtensionContext -> JsFormExtensionContext++ : 解析Want
+
+JsFormExtensionContext -> FormExtensionContext++ : context_-> StartAbility(want)
+
+FormExtensionContext -> FormMgr++ : StartAbility(want, token_)
+
+FormMgr -> FormMgrService++ : StartAbility(want, token_)
+
+FormMgrService -> IBundleMgr++ : 检查调用方BundleName和请求调用的bundleName
+
+IBundleMgr --> FormMgrService-- : return 结果
+
+alt 失败
+    FormMgrService --> FormMgr : return ERR_APPEXECFWK_FORM_GET_INFO_FAILED
+    FormMgr --> FormExtensionContext : return ERR_APPEXECFWK_FORM_GET_INFO_FAILED
+    FormExtensionContext --> JsFormExtensionContext : return ERR_APPEXECFWK_FORM_GET_INFO_FAILED
+
+else 成功
+    FormMgrService -> IBundleMgr++ : 检查调用方是否为系统引用
+    IBundleMgr --> FormMgrService-- : return 结果
+    alt true
+        FormMgrService -> IAbilityManager : StartAbility(want, token_, -1 , -1)
+        IAbilityManager -> FormMgrService : return result
+        FormMgrService -> FormMgr : return result
+        FormMgr -> FormExtensionContext : return result
+        FormExtensionContext -> JsFormExtensionContext : return result
+    else false
+        FormMgrService -> FormMgr : return ERR_APPEXECFWK_FORM_GET_INFO_FAILED
+        FormMgr -> FormExtensionContext : return ERR_APPEXECFWK_FORM_GET_INFO_FAILED
+        FormExtensionContext -> JsFormExtensionContext : return ERR_APPEXECFWK_FORM_GET_INFO_FAILED
+
+    end
+end
+@enduml
