@@ -1,3 +1,3 @@
 # stupid way
 
-[Get Started](#goahead)
+[Get Started](/README.md)
