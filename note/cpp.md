@@ -406,83 +406,7 @@ a.hello(); //this 指向a的内存地址
 
 ### extern
 
-
-
-
-
-
-
-## 容器
-
-### 定义方式
-
-有五种定义方式
-
-```cpp
-#include<vector>
-#include<deque>
-#include<list>
-
-//1.空容器
-list<string> s_list;
-vector<int> i_vec;
-
-//2.特定大小容器，元素为默认值
-list<string> s_list(1024);
-vector<int> i_vec(1024);
-
-//3.特定大小，并赋初始值
-list<string> s_list(1024,"zhuhan")
-vector<int> i_vec(1024,1);
-
-//4. 通过迭代器iterator产生
-int arr[3] = {1,2,3};
-vector<int> i_vec(arr,arr+3);
-
-//5. 根据某个容器复制
-list<string> s_list(list);//将list复制给s_list 
-```
-
-### iterator
-
-每个容器都提供了begin()的方法，可返回一个iterator，指向第一个元素。end()则返回最后一个元素
-
-```cpp
-//iterator定义,iter指向vector的第一个元素
-vector<string>::iterator iter = vec.begin(); 
-for(iter = vec.begin(); iter < vec.end(); iter++) {
-    //
-}
-//对于const vector，需要定义const_iterator
-//const_iterator不允许有写入操作
-const vector<string> c_vec;
-vector<string>::const_iterator c_iter = c_vec.begin(); 
-
-//iterator调用所指元素提供的函数与指针一样采用：->
-iter->size()  //显示string字符串长度
-
-```
-
-### map
-
-map取值：int value = map[key];
-
-map存值：map[key]++
-
-```cpp
-#include<map>
-#include<string>
-
-map<sring,int> words;
-//遍历map
-map<string,int>::iterator ite = words.begin();
-for(;ite != words.end();ite++) {
-	cout<<ite->first;  //key
-	cout<<ite->second; //value
-}
-```
-
-### set
+### 
 
 ##  面向对象
 
@@ -1082,3 +1006,72 @@ void push()  //压栈
 size_type size() const; //返回无符号整型
 ```
 
+### list
+
+有五种定义方式
+
+```cpp
+#include<vector>
+#include<deque>
+#include<list>
+
+//1.空容器
+list<string> s_list;
+vector<int> i_vec;
+
+//2.特定大小容器，元素为默认值
+list<string> s_list(1024);
+vector<int> i_vec(1024);
+
+//3.特定大小，并赋初始值
+list<string> s_list(1024,"zhuhan")
+vector<int> i_vec(1024,1);
+
+//4. 通过迭代器iterator产生
+int arr[3] = {1,2,3};
+vector<int> i_vec(arr,arr+3);
+
+//5. 根据某个容器复制
+list<string> s_list(list);//将list复制给s_list 
+```
+
+### iterator
+
+每个容器都提供了begin()的方法，可返回一个iterator，指向第一个元素。end()则返回最后一个元素
+
+```cpp
+//iterator定义,iter指向vector的第一个元素
+vector<string>::iterator iter = vec.begin(); 
+for(iter = vec.begin(); iter < vec.end(); iter++) {
+    //
+}
+//对于const vector，需要定义const_iterator
+//const_iterator不允许有写入操作
+const vector<string> c_vec;
+vector<string>::const_iterator c_iter = c_vec.begin(); 
+
+//iterator调用所指元素提供的函数与指针一样采用：->
+iter->size()  //显示string字符串长度
+
+```
+
+### map
+
+map取值：int value = map[key];
+
+map存值：map[key]++
+
+```cpp
+#include<map>
+#include<string>
+
+map<sring,int> words;
+//遍历map
+map<string,int>::iterator ite = words.begin();
+for(;ite != words.end();ite++) {
+	cout<<ite->first;  //key
+	cout<<ite->second; //value
+}
+```
+
+### set
