@@ -78,7 +78,9 @@ Signal 11
 
 通过崩溃日志可以确定崩溃的进程线程，便于从日志中排查问题。
 
-## 4. 定位问题   ![定位问题-1](images/signal11_image/定位问题-1.png)
+## 4. 定位问题  
+
+##  ![定位问题-1](images/signal11_image/定位问题-1.png)
 
 1. 找到崩溃日志中崩溃的.so和cpp文件，一般直接定位.so文件即可。
 
@@ -94,6 +96,8 @@ Signal 11
 ```shell
 # addr2line -a -C -f -i -e [lib目录] [崩溃日志的行号]..
 addr2line -a -C -f -i -e ./out/rk3568/lib.unstripped/ability/ability_runtime/libappkit_native.z.so 45f60 7bfac
+
+./prebuilts/clang/ohos/linux-x86_64/llvm/bin/llvm-addr2line -a -C -f -i -e
 ```
 
 ![定位问题-2](images/signal11_image/定位问题-2.png)

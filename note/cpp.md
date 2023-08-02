@@ -1,5 +1,29 @@
 # Cpp - a stupid language
 
+## 头文件
+
+头文件中包含了函数原型，库文件中包含了函数的编译代码。
+
+## 基本数据类型
+
+| 数据类型                  | 32位(字节) | 64位(字节) | 取值范围（32位）                                     |
+| ------------------------- | ---------- | ---------- | ---------------------------------------------------- |
+| char                      | 1          | 1          | -128~127                                             |
+| unsigned char(当byte使用) | 1          | 1          | 0~255                                                |
+| short int /short          | 2          | 2          | –32,768~32,767                                       |
+| unsigned  short           | 2          | 2          | 0~65,535                                             |
+| int                       | 4          | 4          | -2,147,483,648~2,147,483,647                         |
+| unsigned int              | 4          | 4          | 0~4,294,967,295                                      |
+| long int /long            | 4          | 4          | –2,147,483,648~2,147,483,647                         |
+| unsigned long             | 4          | 4          | 0~4,294,967,295                                      |
+| long long int/long long   | 8          | 8          | -9,223,372,036,854,775,808~9,223,372,036,854,775,807 |
+| 指针                      | 4          | 8          |                                                      |
+| float                     | 4          | 4          | 3.4E +/- 38 (7 digits)                               |
+| double                    | 8          | 8          | 1.7E +/- 308 (15 digits)                             |
+| long double               | 12         | 16         |                                                      |
+
+
+
 ## 编译与运行
 
 ```shell
@@ -13,6 +37,38 @@ g++ a.cpp -o ./out/a
 
 
 ## 指针
+
+任何指针都可以初始化为空指针0，即为null
+
+```
+int *p = 0; //初始化空指针
+string *s = 0; 
+```
+
+### 提领运算符（*）
+
+p为指针，指向a的地址。 *p为指向这个地址的对象（或者值）
+
+```
+int a = 100;
+int *p = &a;
+*p = 1;
+```
+
+
+
+### arrow运算符（->）
+
+```
+//class A
+A a;
+a.func();  //dot(.)运算符用于成员选择操作
+
+A *p = &a;
+p->func();	//arrow(->)运算符用于指针来选择操作
+```
+
+
 
 ### 数组与指针
 
@@ -266,7 +322,65 @@ int const* find(const vector<int> &v, int a) {
 
 函数后面加上const表示该函数只读成员变量，不能修改成员变量.
 
-函数前面加上const表示该函数的返回值不能被修改
+```cpp
+void A::show() const //不会修改调用该方法的对象，也就是成员变量不可被修改
+```
+
+函数前面加上const表示该函数的返回值不能被修改。
+
+下面代码表示，
+
+​	1.返回值为`const Stock &`，不可变；
+
+​	2.入参为cosnt引用，在函数体中不可修改；
+
+​	3.最后的const表示函数为cosnt，不可修改调用该方法的对象
+
+```cpp
+const Stock & getHigherStock(const Stock &s) const;
+```
+
+**定义常量时必须赋值**
+
+```cpp
+const int Month = 12;
+```
+
+**指针和const**
+
+```
+int age = 1;
+const int * p = &age;   //pt指向const int，即*p的值为常量，不可修改
+*p = 2;  //编译报错，不可修改常量
+```
+
+不能将const的地址赋值给非const的指针，如果这样赋值，那么非const的指针就会修改const地址的值，显然不合理。
+
+```cpp
+const int arr[2] = {1,2};
+sum(int arr[]);
+sum(arr)  //编译报错
+sum(const int arr[]);//该函数可以将arr当作参数传入
+```
+
+**指针常量和常量指针**
+
+```cpp
+int a = 1;
+
+const int *p1 = &a; //a pointer to const int
+int *const p2 = &a; //a const pointer to int
+
+*p1 = 2;    //编译报错
+*p2 = 2;
+
+int b = 3;
+
+p1 = &b;
+p2 = &b;    //编译报错
+```
+
+
 
 ### explicit
 
@@ -277,6 +391,26 @@ int const* find(const vector<int> &v, int a) {
 `using namespace xx;`:使用命名空间
 
 `using Want = OHOS::AAFwk::Want;`定义别名
+
+
+
+### this
+
+一个指针，默认指向调用者的内存地址
+
+```
+a.hello(); //this 指向a的内存地址
+```
+
+
+
+### extern
+
+
+
+
+
+
 
 ## 容器
 
@@ -352,7 +486,32 @@ for(;ite != words.end();ite++) {
 
 ##  面向对象
 
+
+
+### 初始化
+
+```cpp
+A a("name", age); //创建a对象，并初始化
+
+/**
+* c++允许编译器用两种方式初始化
+*	1.直接创建a对象，并初始化
+*	2.创建一个临时对象并初始化，然后将这个对象赋值给a对象，并析构这一临时对象
+*/
+A a = A("name", age);
+
+a1 = a2 // 将a2赋值给a1；
+```
+
+
+
+### 类和结构
+
+类和结构体的唯一区别就是结构的默认访问类型是public，类的默认访问类型是private。通常C++中结构只用来表示存粹的数据对象（POD，Plain Old Data）。
+
 ### 类作用域解析
+
+定义类的成员函数时，需要加上该类的作用域解析运算符（::）来表示这个函数是属于某个类的成员函数。
 
 ```cpp
 class:://表示类作用域解析
